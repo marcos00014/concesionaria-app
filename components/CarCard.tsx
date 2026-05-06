@@ -47,20 +47,19 @@ export default function CarCard({ vehiculo, onClick, index }: CarProps) {
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 35 }}
+      initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{
-        duration: 0.45,
-        delay: index * 0.08,
+        duration: 0.4,
+        delay: index * 0.06,
         ease: "easeOut",
       }}
       onClick={onClick}
-      className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-2xl"
+      className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[26px] border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"
     >
       {/* IMAGEN */}
-      <div className="relative h-56 overflow-hidden bg-slate-200">
-        <Image
+<div className="relative h-32 overflow-hidden bg-slate-200">        <Image
           src={vehiculo.imagenes[fotoActual]}
           alt={`${vehiculo.marca} ${vehiculo.modelo}`}
           fill
@@ -72,11 +71,11 @@ export default function CarCard({ vehiculo, onClick, index }: CarProps) {
 
         {/* BADGES */}
         <div className="absolute left-3 top-3 flex gap-2">
-          <span className="rounded-full bg-white/95 px-3 py-1 text-xs font-black text-slate-900 shadow-sm backdrop-blur">
+          <span className="rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-black text-slate-900 shadow-sm backdrop-blur">
             {vehiculo.año}
           </span>
 
-          <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-black text-white shadow-sm">
+          <span className="rounded-full bg-blue-600 px-2.5 py-1 text-[11px] font-black text-white shadow-sm">
             Disponible
           </span>
         </div>
@@ -86,14 +85,14 @@ export default function CarCard({ vehiculo, onClick, index }: CarProps) {
           <>
             <button
               onClick={fotoAnterior}
-              className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/85 p-2 text-slate-800 opacity-0 shadow-md transition hover:bg-white group-hover:opacity-100"
+              className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/85 p-1.5 text-slate-800 opacity-0 shadow-md transition hover:bg-white group-hover:opacity-100"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
 
             <button
               onClick={fotoSiguiente}
-              className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/85 p-2 text-slate-800 opacity-0 shadow-md transition hover:bg-white group-hover:opacity-100"
+              className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/85 p-1.5 text-slate-800 opacity-0 shadow-md transition hover:bg-white group-hover:opacity-100"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -101,12 +100,12 @@ export default function CarCard({ vehiculo, onClick, index }: CarProps) {
         )}
 
         {/* INDICADORES */}
-        <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+        <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
           {vehiculo.imagenes.map((_, i) => (
             <div
               key={i}
               className={`h-1.5 rounded-full transition-all ${
-                i === fotoActual ? "w-5 bg-white" : "w-1.5 bg-white/45"
+                i === fotoActual ? "w-4 bg-white" : "w-1.5 bg-white/45"
               }`}
             />
           ))}
@@ -114,51 +113,54 @@ export default function CarCard({ vehiculo, onClick, index }: CarProps) {
       </div>
 
       {/* INFO */}
-      <div className="flex flex-1 flex-col p-5">
-        <div className="mb-4">
-          <p className="text-xs font-black uppercase tracking-wide text-blue-600">
+<div className="flex flex-1 flex-col p-3">        <div className="mb-3">
+          <p className="text-[11px] font-black uppercase tracking-wide text-blue-600">
             {vehiculo.marca}
           </p>
 
-          <h3 className="mt-1 line-clamp-1 text-xl font-black text-slate-950">
+          <h3 className="mt-1 line-clamp-1 text-lg font-black text-slate-950">
             {vehiculo.modelo}
           </h3>
         </div>
 
-        <div className="mb-5">
-          <p className="text-xs font-bold uppercase text-slate-400">Precio</p>
-          <p className="text-2xl font-black text-slate-950">
+        <div className="mb-4">
+          <p className="text-[11px] font-bold uppercase text-slate-400">
+            Precio
+          </p>
+          <p className="text-xl font-black text-slate-950">
             US$ {vehiculo.precioUSD.toLocaleString("es-AR")}
           </p>
         </div>
 
         {/* DETALLES */}
-        <div className="grid grid-cols-2 gap-2 border-y border-slate-100 py-4 text-sm">
-          <div className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-slate-600">
-            <Gauge className="h-4 w-4 text-blue-600" />
-            <span className="font-semibold">{vehiculo.kilometraje}</span>
+        <div className="grid grid-cols-2 gap-2 border-y border-slate-100 py-3 text-xs">
+          <div className="flex items-center gap-1.5 rounded-xl bg-slate-50 px-2.5 py-2 text-slate-600">
+            <Gauge className="h-3.5 w-3.5 shrink-0 text-blue-600" />
+            <span className="truncate font-semibold">{vehiculo.kilometraje}</span>
           </div>
 
-          <div className="flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-slate-600">
-            <Cog className="h-4 w-4 text-blue-600" />
-            <span className="font-semibold">{vehiculo.transmision}</span>
+          <div className="flex items-center gap-1.5 rounded-xl bg-slate-50 px-2.5 py-2 text-slate-600">
+            <Cog className="h-3.5 w-3.5 shrink-0 text-blue-600" />
+            <span className="truncate font-semibold">{vehiculo.transmision}</span>
           </div>
 
           {vehiculo.combustible && (
-            <div className="col-span-2 flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-slate-600">
-              <Fuel className="h-4 w-4 text-blue-600" />
-              <span className="font-semibold">{vehiculo.combustible}</span>
+            <div className="col-span-2 flex items-center gap-1.5 rounded-xl bg-slate-50 px-2.5 py-2 text-slate-600">
+              <Fuel className="h-3.5 w-3.5 shrink-0 text-blue-600" />
+              <span className="truncate font-semibold">
+                {vehiculo.combustible}
+              </span>
             </div>
           )}
         </div>
 
         {/* CTA */}
-        <div className="mt-5 flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-400">
+        <div className="mt-4 flex items-center justify-between">
+          <span className="text-[11px] font-bold text-slate-400">
             Ver ficha completa
           </span>
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-white transition group-hover:bg-blue-600">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-950 text-white transition group-hover:bg-blue-600">
             <Eye className="h-4 w-4" />
           </div>
         </div>

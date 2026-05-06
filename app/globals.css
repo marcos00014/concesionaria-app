@@ -135,3 +135,21 @@ body::before {
   pointer-events: none;
   z-index: -1;
 }
+/* ESCALA GENERAL DESKTOP */
+@media (min-width: 1024px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1440px) {
+  html {
+    font-size: 15px;
+  }
+}

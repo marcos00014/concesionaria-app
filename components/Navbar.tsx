@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, X, Car } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { EMPRESA } from "../data";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,8 +51,7 @@ export default function Navbar() {
     <nav
       className={`fixed left-0 top-0 z-[80] w-full transition-all duration-300 ${
         scrolled
-          ? "border-b border-white/10 bg-black/85 shadow-2xl backdrop-blur-xl"
-          : "bg-transparent"
+? "border-b border-white/10 bg-black/70 shadow-2xl backdrop-blur-xl"          : "bg-transparent"
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -64,17 +64,24 @@ export default function Navbar() {
             }}
             className="flex items-center gap-3"
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white transition">
-              <Car className="h-6 w-6" />
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-1 backdrop-blur">
+              <Image
+                src="/logomini.png"
+                alt="AutoElite"
+                width={42}
+                height={42}
+                className="object-contain"
+                priority
+              />
             </div>
 
-            <div className="text-left">
-              <span className="block text-xl font-black tracking-tight text-white transition">
+            <div className="text-left leading-none">
+              <span className="block text-xl font-black tracking-tight text-white">
                 {EMPRESA.nombre}
               </span>
 
-              <span className="hidden text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 sm:block">
-                Concesionaria premium
+              <span className="hidden text-[9px] font-bold uppercase tracking-[0.28em] text-blue-400 sm:block">
+                Premium Cars
               </span>
             </div>
           </button>
