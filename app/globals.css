@@ -1,26 +1,137 @@
 @import "tailwindcss";
 
+/* VARIABLES */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+
+  --border: #e2e8f0;
 }
 
+/* THEME */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* RESET GENERAL */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth !important;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  overflow-x: hidden;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* SELECCIÓN */
+::selection {
+  background: var(--primary);
+  color: white;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* IMÁGENES */
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* BOTONES */
+button {
+  cursor: pointer;
+}
+
+/* LINKS */
+a {
+  text-decoration: none;
+}
+
+/* ANIMACIONES */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.5s ease-out;
+}
+
+/* UTILIDADES */
+.container-premium {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.glass {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* EVITA PARPADEOS */
+html,
+body {
+  overscroll-behavior: none;
+}
+
+/* FONDO GLOBAL */
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.05), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.05), transparent 30%);
+
+  pointer-events: none;
+  z-index: -1;
 }

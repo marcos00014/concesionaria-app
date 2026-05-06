@@ -1,65 +1,765 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Navbar from "../components/Navbar";
+import CarCard from "../components/CarCard";
+import CarModal from "../components/CarModal";
+import FloatingChat from "../components/FloatingChat";
+import AsesoresCarousel from "../components/AsesoresCarousel";
+import { VEHICULOS, EMPRESA } from "../data";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { FaInstagram, FaFacebookF } from "react-icons/fa";
+import {
+  Search,
+  SlidersHorizontal,
+  X,
+  MapPin,
+  Phone,
+  ShieldCheck,
+  HandCoins,
+  RefreshCcw,
+  Star,
+  Mail,
+  Car,
+  CheckCircle2,
+} from "lucide-react";
+
+type TipoVehiculo = (typeof VEHICULOS)[0];
+
+const BENEFICIOS = [
+  {
+    titulo: "Vehículos seleccionados",
+    descripcion:
+      "Unidades revisadas y publicadas con información clara para que compres con confianza.",
+    icono: ShieldCheck,
+  },
+  {
+    titulo: "Financiación a medida",
+    descripcion:
+      "Opciones de financiación según el vehículo, entrega inicial y perfil del comprador.",
+    icono: HandCoins,
+  },
+  {
+    titulo: "Aceptamos permutas",
+    descripcion:
+      "Tomamos tu usado como parte de pago, sujeto a evaluación previa del estado general.",
+    icono: RefreshCcw,
+  },
+];
+
+const TESTIMONIOS = [
+  {
+    nombre: "Federico R.",
+    texto:
+      "La atención fue excelente. Me asesoraron por WhatsApp y pude coordinar la visita rápido.",
+  },
+  {
+    nombre: "Camila S.",
+    texto:
+      "Muy buena experiencia. La información del vehículo era clara y el proceso fue simple.",
+  },
+  {
+    nombre: "Lucas M.",
+    texto:
+      "Me ayudaron a encontrar una unidad acorde a mi presupuesto y aceptaron mi usado en parte de pago.",
+  },
+];
 
 export default function Home() {
+  const [vehiculoSeleccionado, setVehiculoSeleccionado] =
+    useState<TipoVehiculo | null>(null);
+
+  const [busqueda, setBusqueda] = useState("");
+  const [marca, setMarca] = useState("Todas");
+  const [modelo, setModelo] = useState("Todos");
+  const [año, setAño] = useState("Todos");
+  const [transmision, setTransmision] = useState("Todas");
+  const [combustible, setCombustible] = useState("Todos");
+  const [precioMaximo, setPrecioMaximo] = useState("Todos");
+
+  const marcas = useMemo(() => {
+    return ["Todas", ...Array.from(new Set(VEHICULOS.map((v) => v.marca)))];
+  }, []);
+
+  const modelos = useMemo(() => {
+    const modelosFiltrados =
+      marca === "Todas"
+        ? VEHICULOS.map((v) => v.modelo)
+        : VEHICULOS.filter((v) => v.marca === marca).map((v) => v.modelo);
+
+    return ["Todos", ...Array.from(new Set(modelosFiltrados))];
+  }, [marca]);
+
+  const años = useMemo(() => {
+    return [
+      "Todos",
+      ...Array.from(new Set(VEHICULOS.map((v) => v.año))).sort(
+        (a, b) => b - a
+      ),
+    ];
+  }, []);
+
+  const transmisiones = useMemo(() => {
+    return [
+      "Todas",
+      ...Array.from(new Set(VEHICULOS.map((v) => v.transmision))),
+    ];
+  }, []);
+
+  const combustibles = useMemo(() => {
+    return [
+      "Todos",
+      ...Array.from(new Set(VEHICULOS.map((v) => v.combustible))),
+    ];
+  }, []);
+
+  const marcasDestacadas = useMemo(() => {
+    return Array.from(new Set(VEHICULOS.map((v) => v.marca)));
+  }, []);
+
+  const vehiculosFiltrados = useMemo(() => {
+    return VEHICULOS.filter((auto) => {
+      const textoBusqueda =
+        `${auto.marca} ${auto.modelo} ${auto.año} ${auto.kilometraje} ${auto.transmision} ${auto.combustible} ${auto.motor}`.toLowerCase();
+
+      return (
+        textoBusqueda.includes(busqueda.toLowerCase()) &&
+        (marca === "Todas" || auto.marca === marca) &&
+        (modelo === "Todos" || auto.modelo === modelo) &&
+        (año === "Todos" || auto.año === Number(año)) &&
+        (transmision === "Todas" || auto.transmision === transmision) &&
+        (combustible === "Todos" || auto.combustible === combustible) &&
+        (precioMaximo === "Todos" || auto.precioUSD <= Number(precioMaximo))
+      );
+    });
+  }, [busqueda, marca, modelo, año, transmision, combustible, precioMaximo]);
+
+  const limpiarFiltros = () => {
+    setBusqueda("");
+    setMarca("Todas");
+    setModelo("Todos");
+    setAño("Todos");
+    setTransmision("Todas");
+    setCombustible("Todos");
+    setPrecioMaximo("Todos");
+  };
+
+  const hayFiltrosActivos =
+    busqueda ||
+    marca !== "Todas" ||
+    modelo !== "Todos" ||
+    año !== "Todos" ||
+    transmision !== "Todas" ||
+    combustible !== "Todos" ||
+    precioMaximo !== "Todos";
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-slate-50 font-sans selection:bg-blue-600 selection:text-white">
+      <Navbar />
+
+      {/* HERO */}
+      <section
+        id="inicio"
+        className="relative flex min-h-screen w-full items-center overflow-hidden"
+      >
+        <div className="absolute inset-0 z-0 bg-slate-950">
+          <Image
+            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1920"
+            alt="Vehículo Premium"
+            fill
+            unoptimized
+            className="object-cover opacity-75"
+            priority
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.85, ease: "easeOut" }}
+            className="max-w-3xl"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <span className="mb-6 inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-white backdrop-blur">
+              Catálogo Exclusivo
+            </span>
+
+            <h1 className="max-w-4xl text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-8xl">
+              Redefiní tu forma de moverte.
+            </h1>
+
+            <p className="mt-6 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
+              Descubrí una selección de vehículos premium, deportivos, SUV y
+              pickups. Consultá directamente con un asesor por WhatsApp.
+            </p>
+
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="#vehiculos"
+                className="rounded-full bg-white px-8 py-4 text-center text-sm font-black uppercase tracking-wide text-slate-950 transition hover:bg-slate-200"
+              >
+                Ver catálogo
+              </a>
+
+              <a
+                href="#asesores"
+                className="rounded-full border border-white/30 bg-white/10 px-8 py-4 text-center text-sm font-black uppercase tracking-wide text-white backdrop-blur transition hover:bg-white hover:text-slate-950"
+              >
+                Contactar asesor
+              </a>
+            </div>
+          </motion.div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* VEHÍCULOS */}
+      <section id="vehiculos" className="bg-slate-50 py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <motion.div
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="max-w-2xl"
+            >
+              <span className="mb-3 inline-block text-sm font-black uppercase tracking-wide text-blue-600">
+                Inventario actualizado
+              </span>
+
+              <h2 className="text-4xl font-black tracking-tight text-slate-950 md:text-5xl">
+                Stock disponible
+              </h2>
+
+              <p className="mt-4 text-base leading-7 text-slate-500">
+                Buscá por marca, modelo, año, precio o características del
+                vehículo.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex w-fit rounded-full border border-blue-100 bg-blue-50 px-5 py-3 text-sm font-black uppercase tracking-wide text-blue-700"
+            >
+              {vehiculosFiltrados.length} de {VEHICULOS.length} unidades
+            </motion.div>
+          </div>
+
+          {/* FILTROS */}
+          <div className="mb-10 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <SlidersHorizontal className="h-5 w-5" />
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-black uppercase tracking-wide text-slate-950">
+                    Filtrar vehículos
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Refiná el stock según lo que está buscando el cliente.
+                  </p>
+                </div>
+              </div>
+
+              {hayFiltrosActivos && (
+                <button
+                  onClick={limpiarFiltros}
+                  className="hidden items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-black uppercase text-slate-600 transition hover:bg-slate-100 sm:flex"
+                >
+                  <X className="h-4 w-4" />
+                  Limpiar
+                </button>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <div className="relative md:col-span-2 xl:col-span-2">
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+
+                <input
+                  value={busqueda}
+                  onChange={(e) => setBusqueda(e.target.value)}
+                  placeholder="Buscar: Corolla, Amarok, BMW, híbrido..."
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-12 pr-4 text-sm font-semibold text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                />
+              </div>
+
+              <select
+                value={marca}
+                onChange={(e) => {
+                  setMarca(e.target.value);
+                  setModelo("Todos");
+                }}
+                className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              >
+                {marcas.map((item) => (
+                  <option key={item} value={item}>
+                    Marca: {item}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={modelo}
+                onChange={(e) => setModelo(e.target.value)}
+                className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              >
+                {modelos.map((item) => (
+                  <option key={item} value={item}>
+                    Modelo: {item}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={año}
+                onChange={(e) => setAño(e.target.value)}
+                className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              >
+                {años.map((item) => (
+                  <option key={item} value={String(item)}>
+                    Año: {item}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={transmision}
+                onChange={(e) => setTransmision(e.target.value)}
+                className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              >
+                {transmisiones.map((item) => (
+                  <option key={item} value={item}>
+                    Transmisión: {item}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={combustible}
+                onChange={(e) => setCombustible(e.target.value)}
+                className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              >
+                {combustibles.map((item) => (
+                  <option key={item} value={item}>
+                    Combustible: {item}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={precioMaximo}
+                onChange={(e) => setPrecioMaximo(e.target.value)}
+                className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
+              >
+                <option value="Todos">Precio: Todos</option>
+                <option value="30000">Hasta US$ 30.000</option>
+                <option value="50000">Hasta US$ 50.000</option>
+                <option value="80000">Hasta US$ 80.000</option>
+                <option value="100000">Hasta US$ 100.000</option>
+                <option value="150000">Hasta US$ 150.000</option>
+              </select>
+            </div>
+
+            {hayFiltrosActivos && (
+              <button
+                onClick={limpiarFiltros}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs font-black uppercase text-slate-600 transition hover:bg-slate-100 sm:hidden"
+              >
+                <X className="h-4 w-4" />
+                Limpiar filtros
+              </button>
+            )}
+          </div>
+
+          {vehiculosFiltrados.length > 0 ? (
+            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 xl:grid-cols-3">
+              {vehiculosFiltrados.map((auto, index) => (
+                <CarCard
+                  key={auto.id}
+                  vehiculo={auto}
+                  index={index}
+                  onClick={() => setVehiculoSeleccionado(auto)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-3xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
+              <h3 className="text-2xl font-black text-slate-950">
+                No encontramos vehículos
+              </h3>
+
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-slate-500">
+                Probá limpiando los filtros o buscando por otra marca, modelo o
+                característica.
+              </p>
+
+              <button
+                onClick={limpiarFiltros}
+                className="mt-6 rounded-full bg-slate-950 px-6 py-3 text-sm font-black text-white transition hover:bg-blue-600"
+              >
+                Limpiar filtros
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* QUIÉNES SOMOS */}
+      <section id="quienes-somos" className="bg-white py-24">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55 }}
+          >
+            <span className="mb-3 inline-block text-sm font-black uppercase tracking-wide text-blue-600">
+              Quiénes somos
+            </span>
+
+            <h2 className="text-4xl font-black tracking-tight text-slate-950 md:text-5xl">
+              Más que una concesionaria.
+            </h2>
+
+            <p className="mt-6 text-base leading-8 text-slate-600">
+              En {EMPRESA.nombre} trabajamos para ofrecer una experiencia de
+              compra clara, segura y personalizada. Seleccionamos vehículos con
+              cuidado, priorizando calidad, estado general y transparencia en
+              cada operación.
+            </p>
+
+            <p className="mt-4 text-base leading-8 text-slate-600">
+              Nuestro equipo acompaña a cada cliente desde la búsqueda del
+              vehículo ideal hasta la entrega final, incluyendo financiación,
+              permutas, asesoramiento y atención directa por WhatsApp.
+            </p>
+
+            <div className="mt-10 grid grid-cols-2 gap-4">
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                <p className="text-3xl font-black text-slate-950">+10</p>
+                <p className="mt-1 text-sm font-semibold text-slate-500">
+                  Años de experiencia
+                </p>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                <p className="text-3xl font-black text-slate-950">+500</p>
+                <p className="mt-1 text-sm font-semibold text-slate-500">
+                  Vehículos entregados
+                </p>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                <p className="text-3xl font-black text-slate-950">24/7</p>
+                <p className="mt-1 text-sm font-semibold text-slate-500">
+                  Atención online
+                </p>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                <p className="text-3xl font-black text-slate-950">100%</p>
+                <p className="mt-1 text-sm font-semibold text-slate-500">
+                  Atención personalizada
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55 }}
+          >
+            <div className="overflow-hidden rounded-[32px] border border-slate-200 shadow-xl">
+              <iframe
+                src={`https://www.google.com/maps?q=${encodeURIComponent(
+                  EMPRESA.direccion
+                )}&output=embed`}
+                width="100%"
+                height="430"
+                loading="lazy"
+                className="border-0"
+              />
+            </div>
+
+            <div className="mt-5 rounded-3xl border border-slate-200 bg-slate-50 p-6">
+              <h3 className="text-xl font-black text-slate-950">
+                Sucursal principal
+              </h3>
+
+              <p className="mt-3 flex items-center gap-2 text-sm font-semibold text-slate-600">
+                <MapPin className="h-4 w-4 text-blue-600" />
+                {EMPRESA.direccion}
+              </p>
+
+              <p className="mt-2 flex items-center gap-2 text-sm font-semibold text-slate-600">
+                <Phone className="h-4 w-4 text-blue-600" />
+                {EMPRESA.telefono}
+              </p>
+
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  EMPRESA.direccion
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex rounded-full bg-slate-950 px-6 py-3 text-sm font-black text-white transition hover:bg-blue-600"
+              >
+                Abrir en Google Maps
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* BENEFICIOS */}
+      <section className="bg-slate-50 py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-14 max-w-3xl">
+            <span className="mb-3 inline-block text-sm font-black uppercase tracking-wide text-blue-600">
+              Beneficios
+            </span>
+
+            <h2 className="text-4xl font-black tracking-tight text-slate-950 md:text-5xl">
+              Una compra más simple, segura y acompañada.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {BENEFICIOS.map((beneficio, index) => {
+              const Icono = beneficio.icono;
+
+              return (
+                <motion.div
+                  key={beneficio.titulo}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.12 }}
+                  className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                >
+                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                    <Icono className="h-7 w-7" />
+                  </div>
+
+                  <h3 className="text-xl font-black text-slate-950">
+                    {beneficio.titulo}
+                  </h3>
+
+                  <p className="mt-4 text-sm leading-7 text-slate-500">
+                    {beneficio.descripcion}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* MARCAS */}
+      <section className="border-y border-slate-200 bg-white py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <div>
+              <span className="text-sm font-black uppercase tracking-wide text-blue-600">
+                Marcas destacadas
+              </span>
+              <h2 className="mt-2 text-3xl font-black text-slate-950">
+                Trabajamos con unidades seleccionadas
+              </h2>
+            </div>
+
+            <p className="max-w-md text-sm leading-7 text-slate-500">
+              El stock puede variar según disponibilidad. Consultá con nuestros
+              asesores por modelos específicos.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+            {marcasDestacadas.map((marcaAuto) => (
+              <div
+                key={marcaAuto}
+                className="flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-5 py-5 text-sm font-black uppercase tracking-wide text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+              >
+                {marcaAuto}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <AsesoresCarousel />
+
+      {/* TESTIMONIOS */}
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mb-14 max-w-3xl text-center">
+            <span className="mb-3 inline-block text-sm font-black uppercase tracking-wide text-blue-600">
+              Clientes
+            </span>
+
+            <h2 className="text-4xl font-black tracking-tight text-slate-950 md:text-5xl">
+              Experiencias que generan confianza
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {TESTIMONIOS.map((item, index) => (
+              <motion.div
+                key={item.nombre}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.12 }}
+                className="rounded-[32px] border border-slate-200 bg-slate-50 p-8"
+              >
+                <div className="mb-5 flex gap-1 text-yellow-500">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-current" />
+                  ))}
+                </div>
+
+                <p className="text-sm leading-7 text-slate-600">
+                  “{item.texto}”
+                </p>
+
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-sm font-black text-white">
+                    {item.nombre.charAt(0)}
+                  </div>
+
+                  <div>
+                    <p className="font-black text-slate-950">{item.nombre}</p>
+                    <p className="text-xs font-semibold text-slate-400">
+                      Cliente AutoElite
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="bg-slate-950 text-white">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-14 sm:px-6 md:grid-cols-4 lg:px-8">
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600">
+                <Car className="h-6 w-6" />
+              </div>
+
+              <div>
+                <p className="text-2xl font-black">{EMPRESA.nombre}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
+                  Concesionaria premium
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-6 max-w-md text-sm leading-7 text-slate-400">
+              Vehículos seleccionados, atención personalizada y contacto directo
+              con asesores comerciales.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-sm font-black uppercase tracking-wide">
+              Secciones
+            </h3>
+
+            <div className="grid gap-3 text-sm text-slate-400">
+              <a href="#inicio" className="transition hover:text-white">
+                Inicio
+              </a>
+              <a href="#vehiculos" className="transition hover:text-white">
+                Vehículos
+              </a>
+              <a href="#quienes-somos" className="transition hover:text-white">
+                Quiénes somos
+              </a>
+              <a href="#asesores" className="transition hover:text-white">
+                Asesores
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-sm font-black uppercase tracking-wide">
+              Contacto
+            </h3>
+
+            <div className="grid gap-3 text-sm text-slate-400">
+              <p className="flex items-start gap-2">
+                <MapPin className="mt-0.5 h-4 w-4 text-blue-500" />
+                {EMPRESA.direccion}
+              </p>
+
+              <p className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-blue-500" />
+                {EMPRESA.telefono}
+              </p>
+
+              <p className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-blue-500" />
+                {EMPRESA.email}
+              </p>
+
+              <div className="mt-4 flex items-center gap-3">
+  <a
+    href="https://instagram.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 via-pink-600 to-purple-700 text-white transition hover:scale-110"
+  >
+    <FaInstagram className="h-5 w-5" />
+  </a>
+
+  <a
+    href="https://facebook.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1877F2] text-white transition hover:scale-110"
+  >
+    <FaFacebookF className="h-5 w-5" />
+  </a>
+</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-white/10 py-5">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 text-xs font-semibold text-slate-500 sm:px-6 md:flex-row lg:px-8">
+            <p>
+              © {new Date().getFullYear()} {EMPRESA.nombre}. Todos los derechos
+              reservados.
+            </p>
+
+            <p className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-blue-500" />
+              Sitio demo profesional para concesionaria.
+            </p>
+          </div>
+        </div>
+      </footer>
+
+      <CarModal
+        vehiculo={vehiculoSeleccionado}
+        onClose={() => setVehiculoSeleccionado(null)}
+      />
+
+      <FloatingChat />
+    </main>
   );
 }

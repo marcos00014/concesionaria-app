@@ -1,0 +1,221 @@
+export const EMPRESA = {
+  nombre: "AutoElite",
+  email: "contacto@autoelite.com",
+  telefono: "+5491123456789",
+  direccion: "Av. Libertador 1234, CABA",
+};
+
+export const VENDEDORES = [
+  {
+    id: 1,
+    nombre: "Marcos Peña",
+    rol: "Asesor Comercial",
+    telefono: "5493454166622",
+    foto: "https://i.pravatar.cc/150?img=12",
+  },
+  {
+    id: 2,
+    nombre: "Martín López",
+    rol: "Especialista en 0 km",
+    telefono: "5491123456789",
+    foto: "https://i.pravatar.cc/150?img=11",
+  },
+  {
+    id: 3,
+    nombre: "Sofía Gómez",
+    rol: "Especialista en Usados",
+    telefono: "5491198765432",
+    foto: "https://i.pravatar.cc/150?img=5",
+  },
+  {
+    id: 4,
+    nombre: "Valentín Torres",
+    rol: "Asesor de Financiación",
+    telefono: "5491134567890",
+    foto: "https://i.pravatar.cc/150?img=15",
+  },
+  {
+    id: 5,
+    nombre: "Camila Ruiz",
+    rol: "Asesora de Permutas",
+    telefono: "5491145678901",
+    foto: "https://i.pravatar.cc/150?img=20",
+  },
+];
+export const VEHICULOS = [
+  {
+    id: 1,
+    marca: "Toyota",
+    modelo: "Corolla Cross",
+    año: 2023,
+    precioUSD: 28000,
+    kilometraje: "0 km",
+    transmision: "Automática",
+    motor: "2.0",
+    combustible: "Híbrido",
+    puertas: 5,
+    color: "Blanco Perlado",
+    traccion: "4x2",
+    imagenes: [
+      "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=1200",
+    ],
+    descripcion:
+      "SUV híbrida ideal para ciudad y ruta. Excelente consumo y equipamiento premium.",
+  },
+
+  {
+    id: 2,
+    marca: "Volkswagen",
+    modelo: "Amarok V6",
+    año: 2022,
+    precioUSD: 45000,
+    kilometraje: "25.000 km",
+    transmision: "Automática",
+    motor: "3.0 V6",
+    combustible: "Diésel",
+    puertas: 4,
+    color: "Gris Plata",
+    traccion: "4x4",
+    imagenes: [
+      "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1200",
+    ],
+    descripcion:
+      "Potencia y confort en una pickup premium preparada para cualquier terreno.",
+  },
+
+  {
+    id: 3,
+    marca: "BMW",
+    modelo: "M4 Competition",
+    año: 2024,
+    precioUSD: 98000,
+    kilometraje: "8.000 km",
+    transmision: "Automática",
+    motor: "3.0 Biturbo",
+    combustible: "Nafta",
+    puertas: 2,
+    color: "Negro",
+    traccion: "Trasera",
+    imagenes: [
+      "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1200",
+    ],
+    descripcion:
+      "Deportivo de alto rendimiento con diseño agresivo y prestaciones extremas.",
+  },
+
+  {
+    id: 4,
+    marca: "Mercedes-Benz",
+    modelo: "GLC 300",
+    año: 2023,
+    precioUSD: 76000,
+    kilometraje: "12.000 km",
+    transmision: "Automática",
+    motor: "2.0 Turbo",
+    combustible: "Nafta",
+    puertas: 5,
+    color: "Blanco",
+    traccion: "Integral",
+    imagenes: [
+      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&q=80&w=1200",
+    ],
+    descripcion:
+      "SUV premium con interior de lujo y tecnología de última generación.",
+  },
+
+  {
+    id: 5,
+    marca: "Audi",
+    modelo: "RS5",
+    año: 2022,
+    precioUSD: 92000,
+    kilometraje: "15.000 km",
+    transmision: "Tiptronic",
+    motor: "2.9 V6 Biturbo",
+    combustible: "Nafta",
+    puertas: 4,
+    color: "Azul Navarra",
+    traccion: "Quattro",
+    imagenes: [
+      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&q=80&w=1200",
+    ],
+    descripcion:
+      "Elegancia deportiva combinada con potencia extrema y tracción integral.",
+  },
+
+  {
+    id: 6,
+    marca: "Ford",
+    modelo: "Mustang GT",
+    año: 2021,
+    precioUSD: 67000,
+    kilometraje: "18.000 km",
+    transmision: "Manual",
+    motor: "5.0 V8",
+    combustible: "Nafta",
+    puertas: 2,
+    color: "Rojo",
+    traccion: "Trasera",
+    imagenes: [
+      "https://images.unsplash.com/photo-1494905998402-395d579af36f?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1502161254066-6c74afbf07aa?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1200",
+    ],
+    descripcion:
+      "Muscle car icónico con sonido V8 y experiencia de manejo emocionante.",
+  },
+
+  {
+    id: 7,
+    marca: "Porsche",
+    modelo: "911 Carrera",
+    año: 2024,
+    precioUSD: 145000,
+    kilometraje: "3.000 km",
+    transmision: "PDK",
+    motor: "3.0 Boxer Turbo",
+    combustible: "Nafta",
+    puertas: 2,
+    color: "Gris Grafito",
+    traccion: "Trasera",
+    imagenes: [
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&q=80&w=1200",
+    ],
+    descripcion:
+      "El equilibrio perfecto entre lujo, deportividad y precisión alemana.",
+  },
+
+  {
+    id: 8,
+    marca: "Jeep",
+    modelo: "Wrangler Rubicon",
+    año: 2023,
+    precioUSD: 72000,
+    kilometraje: "10.000 km",
+    transmision: "Automática",
+    motor: "3.6 V6",
+    combustible: "Nafta",
+    puertas: 4,
+    color: "Verde Militar",
+    traccion: "4x4",
+    imagenes: [
+      "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1200",
+    ],
+    descripcion:
+      "Preparado para aventura extrema con capacidad off-road superior.",
+  },
+];
