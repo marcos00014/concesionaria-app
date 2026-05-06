@@ -43,10 +43,12 @@ const vendedores = [
 export default function CarModal({ vehiculo, onClose }: CarModalProps) {
   const [fotoActual, setFotoActual] = useState(0);
   const [linkCopiado, setLinkCopiado] = useState(false);
-  const [vendedorSeleccionado, setVendedorSeleccionado] = useState(vendedores[0]);
+  const [vendedorSeleccionado, setVendedorSeleccionado] =
+    useState(vendedores[0]);
 
   useEffect(() => {
     if (vehiculo) document.body.style.overflow = "hidden";
+
     return () => {
       document.body.style.overflow = "";
     };
@@ -66,9 +68,9 @@ ${linkAuto}
 
 ¿Podrías darme más información?`;
 
-  const linkWhatsApp = `https://wa.me/${vendedorSeleccionado.telefono}?text=${encodeURIComponent(
-    mensajeWhatsApp
-  )}`;
+  const linkWhatsApp = `https://wa.me/${
+    vendedorSeleccionado.telefono
+  }?text=${encodeURIComponent(mensajeWhatsApp)}`;
 
   const copiarLink = async () => {
     await navigator.clipboard.writeText(linkAuto);
@@ -78,13 +80,10 @@ ${linkAuto}
 
   return (
     <div className="fixed inset-0 z-[9999] bg-white lg:bg-slate-950/80">
-      {/* FONDO DESKTOP */}
       <div className="hidden lg:block fixed inset-0" onClick={onClose} />
 
-      {/* CONTENEDOR GENERAL */}
-      <div className="relative z-[10000] h-[100dvh] overflow-y-auto lg:flex lg:items-center lg:justify-center lg:p-6">
-        <div className="min-h-[100dvh] bg-white lg:grid lg:min-h-0 lg:max-h-[90vh] lg:w-full lg:max-w-5xl lg:grid-cols-[1fr_0.9fr] lg:overflow-hidden lg:rounded-2xl lg:shadow-2xl">
-          
+      <div className="relative z-[10000] h-[100dvh] w-screen overflow-y-auto overflow-x-hidden lg:flex lg:items-center lg:justify-center lg:p-6">
+        <div className="w-screen min-h-[100dvh] overflow-x-hidden bg-white lg:grid lg:min-h-0 lg:max-h-[90vh] lg:w-full lg:max-w-5xl lg:grid-cols-[1fr_0.9fr] lg:overflow-hidden lg:rounded-2xl lg:shadow-2xl">
           {/* BARRA SUPERIOR MOBILE */}
           <div className="sticky top-0 z-[10002] flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
             <button
@@ -164,7 +163,7 @@ ${linkAuto}
                 <span className="text-blue-600">{vehiculo.modelo}</span>
               </h2>
 
-              <p className="mb-5 text-sm font-medium leading-7 text-black">
+              <p className="mb-5 text-sm font-semibold leading-7 text-slate-950">
                 {vehiculo.descripcion}
               </p>
 
@@ -178,10 +177,26 @@ ${linkAuto}
               </div>
 
               <div className="mb-5 grid grid-cols-2 gap-3">
-                <Dato icono={<CheckCircle2 />} titulo="Motor" valor={vehiculo.motor} />
-                <Dato icono={<GitBranch />} titulo="Caja" valor={vehiculo.transmision} />
-                <Dato icono={<Droplet />} titulo="Combustible" valor={vehiculo.combustible} />
-                <Dato icono={<Car />} titulo="Tracción" valor={vehiculo.traccion} />
+                <Dato
+                  icono={<CheckCircle2 />}
+                  titulo="Motor"
+                  valor={vehiculo.motor}
+                />
+                <Dato
+                  icono={<GitBranch />}
+                  titulo="Caja"
+                  valor={vehiculo.transmision}
+                />
+                <Dato
+                  icono={<Droplet />}
+                  titulo="Combustible"
+                  valor={vehiculo.combustible}
+                />
+                <Dato
+                  icono={<Car />}
+                  titulo="Tracción"
+                  valor={vehiculo.traccion}
+                />
               </div>
 
               <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
