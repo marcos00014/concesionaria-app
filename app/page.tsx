@@ -759,7 +759,7 @@ export default function Home() {
         onClose={() => setVehiculoSeleccionado(null)}
       />
 
-      <FloatingChat />
+      {!vehiculoSeleccionado && <FloatingChat />}
     </main>
   );
 }
